@@ -15,6 +15,7 @@ export const BoardColumn: FC<IBoardColumn> = ({boardList}) => {
     const [cardDescription, setCardDescription] = useState("")
 
     const boardDispatch = useBoardDispatch()
+    const boardState = useBoardState()
 
     const onCancelCard = () => {
         setIsAddingCard(false)
@@ -46,6 +47,17 @@ export const BoardColumn: FC<IBoardColumn> = ({boardList}) => {
         setCardDescription(description)
     }
 
+    const onPasteCard = () => {
+        addCard(boardDispatch, {
+            id: boardList.id,
+            card: {
+                id: new Date(),
+                title: boardState.cuttingCard?.title,
+                description: boardState.cuttingCard?.description
+            }
+        })
+    }
+
     return (
         <div className="list-box">
             <h4>
@@ -57,6 +69,7 @@ export const BoardColumn: FC<IBoardColumn> = ({boardList}) => {
                         <ColumnCard key={`card-${index}`} columnCard={card} listId={boardList.id} />
                     ))
                 }</>
+                {boardState.isCuttingCard && <button className="paste-card-btn" onClick={onPasteCard}>Paste the card</button>}
             </div>
             <div className="card-form-container">
                 {isAddingCard && <form className="card-form">
