@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react'
 import {Card} from "../../@types/Card";
 import "./ColumnCard.css"
-import {cutCard, useBoardDispatch, useBoardState} from "../../contexts/BoardContext";
+import {cutCard, editCard, useBoardDispatch, useBoardState} from "../../contexts/BoardContext";
 
 interface IColumnCard {
     columnCard: Card
@@ -42,6 +42,20 @@ export const ColumnCard: FC<IColumnCard> = ({columnCard, listId}) => {
         setIsEditingCard(false)
     }
 
+    const onDoneEdit = () => {
+        if (cardTitle.length && cardDescription.length) {
+            editCard(boardDispatch, {
+                listId,
+                card: {
+                    id: columnCard.id,
+                    title: cardTitle,
+                    description: cardDescription
+                }
+            });
+            setIsEditingCard(false)
+        }
+    }
+
     return (<div className="card-box-container">
         <div className="card-box">
             <div className={!isEditingCard ? "card-header" : "card-editing-header"}>
@@ -53,7 +67,7 @@ export const ColumnCard: FC<IColumnCard> = ({columnCard, listId}) => {
                 {!isEditingCard && <button className="card-edit-btn" onClick={() => setIsEditingCard(true)}>Edit</button>}
                 {isEditingCard && (<div className="card-btn-wrapper">
                     <button className="card-edit-btn" onClick={onCancelEdit}>Cancel</button>
-                    <button className="card-edit-btn">Done</button>
+                    <button className="card-edit-btn" onClick={onDoneEdit}>Done</button>
                 </div>)}
             </div>
             {isEditingCard && (
