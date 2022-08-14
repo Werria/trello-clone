@@ -2,6 +2,7 @@ import React, {FC, useState} from 'react'
 import {List} from "../../@types/List";
 import "./BoardColumn.css"
 import {addCard, useBoardDispatch, useBoardState} from "../../contexts/BoardContext";
+import {ColumnCard} from "../columnCard/ColumnCard";
 
 interface IBoardColumn {
     boardList: List
@@ -53,7 +54,7 @@ export const BoardColumn: FC<IBoardColumn> = ({boardList}) => {
             <div className="cards-wrapper">
                 <>{
                     boardList.cards.map((card, index) => (
-                        <div key={`card-${index}`}>{card.title}</div>
+                        <ColumnCard key={`card-${index}`} columnCard={card} listId={boardList.id} />
                     ))
                 }</>
             </div>
