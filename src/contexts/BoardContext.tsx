@@ -10,7 +10,7 @@ type State = {
 }
 
 type Action = {
-    type: "ADD_LIST";
+    type: "ADD_LIST" | "ADD_CARD";
     payload: any;
 };
 
@@ -27,6 +27,12 @@ const boardReducer: Reducer<State, Action> = (state, action) => {
     switch (action.type) {
         case "ADD_LIST":
             return {lists: [ ...state.lists, action.payload]};
+        case "ADD_CARD": {
+            const addTemp = [...state.lists]
+            addTemp[action.payload.id] = {...state.lists[action.payload.id],
+                cards: [...state.lists[action.payload.id].cards, action.payload.card]}
+            return {lists: [...addTemp], isCuttingCard: false}
+        };
         default: {
             throw new Error(`Unhandled action type: ${action.type}`);
         }
@@ -61,12 +67,19 @@ function useBoardDispatch() {
     return context;
 }
 
-export { BoardProvider, useBoardState, useBoardDispatch, addList };
+export { BoardProvider, useBoardState, useBoardDispatch, addList, addCard };
 
 // ###########################################################
 function addList(dispatch: Dispatch, list: List) {
     dispatch({
         type: "ADD_LIST",
         payload: list,
+    });
+}
+
+function addCard(dispatch: Dispatch, payload: any) {
+    dispatch({
+        type: "ADD_CARD",
+        payload: payload,
     });
 }
