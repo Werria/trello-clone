@@ -2,6 +2,7 @@ import React, {FC, useState} from "react"
 import {List} from "../../@types/List";
 import "./Board.css"
 import {addList, useBoardDispatch} from "../../contexts/BoardContext";
+import {BoardColumn} from "../boardColumn/BoardColumn";
 
 interface IBoardLists{
     boardLists: List[];
@@ -32,7 +33,7 @@ export const Board: FC<IBoardLists> = ({boardLists}) => {
         <div className="board-list-wrapper">
             <>
                 {boardLists.map((boardList, index) => (
-                    <div key={`list-${index}`}>{boardList.id}</div>
+                    <BoardColumn key={`list-${index}`} boardList={boardList} />
                 ))}
             </>
             <div>
